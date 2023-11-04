@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+    <div>
+        <canvas id="lineChart" width="400" height="200"></canvas>
+
+      </div>
+      
+      
+      <script>
+        // Data for the line chart (initially empty)
+        var chartData = {
+          labels: [], // X-axis labels
+          datasets: [
+            {
+              label: 'Data from ThingSpeak',
+              data: [], // Y-axis data points
+              fill: false,
+              borderColor: 'rgba(75, 192, 192, 1)',
+              tension: 0.4,
+            },
+          ],
+        };
+      
+        // Configuration options for the chart
+        var chartOptions = {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        };
+      
+        // Get the canvas element and create the chart
+        var ctx = document.getElementById('lineChart').getContext('2d');
+        var lineChart = new Chart(ctx, {
+          type: 'line',
+          data: chartData,
+          options: chartOptions,
+        });
+      
+        // Function to fetch data from ThingSpeak API
+        function fetchData() {
+          fetch('https://api.thingspeak.com/channels/2308126/fields/2.json?api_key=D6547LCK8TT2O1C0&results=2')
+            .then((response) => response.json())
+            .then((data) => {
+              // Extract data from the API response and update the chart
+              var labels = [];
+              var values = [];
+              var threshold =100;
+              if(data.feeds[1].field2<=threshold){
+                alert("Stock empty")
+              }
+                console.log(data.feeds[1].field2);
+              // Assuming the API response contains 'field1' and 'created_at' fields
+              data.feeds.forEach((feed) => {
+                labels.push(feed.created_at);
+                values.push(parseFloat(feed.field2));
+              });
+      
+              chartData.labels = labels;
+              chartData.datasets[0].data = values;
+      
+              // Update the chart
+              lineChart.update();
+            })
+            .catch((error) => {
+              console.error('Error fetching data from ThingSpeak:', error);
+            });
+        }
+      
+        // Fetch data and update the chart periodically (adjust the interval as needed)
+        fetchData();
+        setInterval(fetchData, 60000); // Fetch data every 60 seconds
+      </script>
+      
+      
+      
+    
+</body>
+</html>
