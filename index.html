@@ -60,13 +60,13 @@
               var stock_empty_count =0;
 
               var threshold =100;
-              // if(data.feeds[1].field2<=threshold){
-              //   stock_empty_count+=1;
-              //   if(stock_empty_count>5){
-              //       alert("This product gets consumed too quickly!!! Order more!!!")
-              //   }
-              //   alert("Stock empty")
-              // }
+              if(data.feeds[1].field2<=threshold){
+                stock_empty_count+=1;
+                if(stock_empty_count>5){
+                    alert("This product gets consumed too quickly!!! Order more!!!")
+                }
+                alert("Stock empty")
+              }
              
                 console.log(data.feeds[1].field2);
               // Assuming the API response contains 'field1' and 'created_at' fields
