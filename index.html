@@ -45,7 +45,7 @@
 
         // Function to fetch data from ThingSpeak API and update the chart
         function fetchDataAndUpdateChart() {
-            fetch('https://api.thingspeak.com/channels/2308126/fields/2.json?api_key=D6547LCK8TT2O1C0&results=5')
+            fetch('https://api.thingspeak.com/channels/2308126/fields/2.json?api_key=D6547LCK8TT2O1C0&results=15')
                 .then((response) => response.json())
                 .then((data) => {
                     // Extract data from the API response and update the chart
